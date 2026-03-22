@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
@@ -10,18 +11,30 @@ public class PlayerController : MonoBehaviour
     
     private float score = 0f;
     private float elapsedTime = 0f;
-    private Label scoreText;
-    
+    private float highScore = 0f;
 
+    private Label scoreText;
+    private Label highScoreText;
+    private Button restartButton;
     public UIDocument uiDocument;
     public GameObject boosterFlame;
+    public GameObject explosionEffect;
+
 
     Rigidbody2D rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        //Assigning UI elements to variables through query by name and then turning them off
         scoreText = uiDocument.rootVisualElement.Q<Label>("ScoreLabel");
+        highScoreText = uiDocument.rootVisualElement.Q<Label>("HighscoreLabel");
+        highScoreText.style.display = DisplayStyle.None;
+        restartButton = uiDocument.rootVisualElement.Q<Button>("RestartButton");
+        restartButton.style.display = DisplayStyle.None;
+        restartButton.clicked += ReloadScene;//Adds the ReloadScene function to the action list for clicking the restart button
+
+        rb = GetComponent<Rigidbody2D>();
+        highScore = PlayerPrefs.GetFloat("Highscore");
 
 
     }
@@ -67,6 +80,20 @@ public class PlayerController : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         Destroy(gameObject);
+        Instantiate(explosionEffect, transform.position, transform.rotation);
+        restartButton.style.display = DisplayStyle.Flex;
+        highScoreText.style.display = DisplayStyle.Flex;
+        if (score > highScore)
+        {
+            highScore = score;
+            PlayerPrefs.SetFloat("Highscore", highScore);
+        }
+        highScoreText.text = "High Score: " + highScore;
+    }
+
+    void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
 

@@ -443,6 +443,7 @@ MonoBehaviour:
   scoreMultiplier: 10
   uiDocument: {fileID: 808901497}
   boosterFlame: {fileID: 689024811}
+  explosionEffect: {fileID: 7161274152600904085, guid: f97bfef00e8c47b4c8246f99395970a8, type: 3}
 --- !u!1 &689024811
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,7 +460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &689024812
 SpriteRenderer:
   serializedVersion: 2
